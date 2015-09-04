@@ -27,7 +27,7 @@ public class FileUploader extends AsyncTask<String, String, String>{
 
 	private Context context;
 	private String progressPercentage;
-	private Boolean didFailed = false;
+	private static Boolean didFailed = false;
 	private FileUploaderCallback listener;
 	
 	private static String FILE_UPLOAD_SUCCESS = "FILE_UPLOAD_SUCCESS";
@@ -43,7 +43,7 @@ public class FileUploader extends AsyncTask<String, String, String>{
 	    super.onPreExecute();
 	}
 	
-	private Boolean uploadFile(String filename, String url)
+	private static Boolean uploadFile(String filename, String url)
 	{
 		try {
 
@@ -109,7 +109,7 @@ public class FileUploader extends AsyncTask<String, String, String>{
 	}
 	
 //Sync version with no callbacks
-	public Boolean uploadFileSync(String filename, String url)
+	public static Boolean uploadFileSync(String filename, String url)
 	{
 		return uploadFile(filename, url);
 	}
