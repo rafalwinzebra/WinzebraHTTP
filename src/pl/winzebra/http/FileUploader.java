@@ -42,17 +42,16 @@ public class FileUploader extends AsyncTask<String, String, String>{
 	protected void onPreExecute() {
 	    super.onPreExecute();
 	}
-
-	@Override
-	protected String doInBackground(String... aurl) {
-
-	    try {
+	
+	private Boolean uploadFile(String filename, String url)
+	{
+		try {
 
 	        HttpClient httpClient = new DefaultHttpClient();
 
-	        HttpPost httpPost = new HttpPost(aurl[1]);
+	        HttpPost httpPost = new HttpPost(url);
 
-	        File file = new File(aurl[0]);
+	        File file = new File(filename);
 	        FileBody fileBody = new FileBody(file);
 
 	        MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -72,12 +71,20 @@ public class FileUploader extends AsyncTask<String, String, String>{
 	            else if(responseStr.equalsIgnoreCase(FILE_UPLOAD_FAILED))
 	            	didFailed = true;
 	        }
-	        return "";
 	    } catch (Exception e) {
 	        Log.d("Uploader", e.getMessage());
 	        didFailed = true;
 	        
 	    }
+		
+		return !didFailed;
+		
+	}
+
+	@Override
+	protected String doInBackground(String... aurl) {
+
+		uploadFile(aurl[0], aurl[1]);
 
 	    return null;
 
@@ -100,7 +107,12 @@ public class FileUploader extends AsyncTask<String, String, String>{
 	{
 		return this.progressPercentage;
 	}
-
+	
+//Sync version with no callbacks
+	public Boolean uploadFileSync(String filename, String url)
+	{
+		return uploadFile(filename, url);
+	}
 
 
 }
